@@ -2,160 +2,169 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rancho do Robinho 2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rancho do Robinho 2 - Lista de Presentes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* 1. CORREÇÃO DO FUNDO PRETO */
-        body, html {
+        /* Configurações de Fundo */
+        body {
             margin: 0;
-            padding: 0;
-            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
             min-height: 100vh;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #1a1a1a; /* Cor de segurança */
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .background-fixo {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* IMPORTANTE: Nome deve ser idêntico ao arquivo no GitHub */
-            background-image: url('rancho-novo.jpg'); 
+            /* A imagem de fundo fica fixa enquanto o conteúdo rola */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('rancho-novo.jpg'); 
             background-size: cover;
-            background-position: center;
             background-attachment: fixed;
-            filter: brightness(0.4);
-            z-index: -1;
+            background-position: center;
         }
 
-        /* 2. AJUSTE DO ZOOM E CONTAINER */
+        /* Ícone de Admin */
+        .admin-access {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+            color: rgba(255, 255, 255, 0.7);
+            transition: 0.3s;
+        }
+        .admin-access:hover { color: #fff; transform: rotate(45deg); }
+
+        /* Container Principal */
         .container {
-            width: 90%;
-            max-width: 450px; /* Impede que fique gigante ou muito pequeno */
-            margin: 40px auto;
-            background: rgba(255, 255, 255, 0.98);
-            padding: 30px 20px;
-            border-radius: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
-            box-sizing: border-box;
-            position: relative;
         }
 
-        .logo-imagem {
-            width: 100%;
-            max-width: 280px;
-            height: auto;
-            margin-bottom: 15px;
+        .logo-header {
+            max-width: 300px;
+            margin-bottom: 20px;
         }
 
-        .subtitle {
-            font-size: 1rem;
-            font-style: italic;
-            color: #5d4037;
-            margin-bottom: 25px;
-            line-height: 1.4;
+        h1 { font-size: 2.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        p.subtitle { font-size: 1.2em; margin-bottom: 40px; }
+
+        /* Lista de Presentes */
+        .gift-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
         }
 
-        /* 3. ENGRENAGEM ADM */
-        .admin-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            color: #ccc;
-        }
-
-        select, input {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        .reserva-box {
-            background: #fdfaf8;
+        .gift-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             padding: 20px;
-            border-radius: 12px;
-            margin-top: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s;
         }
 
-        button.principal {
-            background-color: #5d4037;
-            color: white;
-            padding: 16px;
+        .gift-card:hover { transform: translateY(-5px); }
+
+        input[type="email"] {
+            width: 80%;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 5px;
             border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            width: 100%;
-            cursor: pointer;
-            text-transform: uppercase;
+            outline: none;
         }
 
-        footer {
-            margin-top: 25px;
-            font-size: 0.8rem;
-            color: #888;
+        .btn-reserve {
+            background-color: #d4af37; /* Tom dourado cowboy */
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-reserve:hover { background-color: #f1c40f; }
+
+        /* Modal Simples para Admin */
+        #admin-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #222;
+            padding: 30px;
+            border-radius: 10px;
+            z-index: 2000;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
         }
     </style>
 </head>
 <body>
 
-    <div class="background-fixo"></div>
+    <div class="admin-access" onclick="openAdmin()">
+        <i class="fas fa-cog"></i>
+    </div>
 
     <div class="container">
-        <button class="admin-btn" onclick="painelAdm()">⚙️</button>
+        <img src="logo-rancho.png.jpg" alt="Logo Rancho do Robinho 2" class="logo-header">
 
-        <img src="rancho-logo-solo.jpg" alt="Logo" class="logo-imagem">
+        <h1>Venha celebrar comigo essa data importante!</h1>
+        <p class="subtitle">Reserve abaixo o seu presente</p>
 
-        <p class="subtitle">"Venha celebrar comigo essa data importante!"</p>
-        
-        <hr style="opacity: 0.1;">
+        <div class="gift-grid">
+            <div class="gift-card">
+                <h3>Kit Churrasco Premium</h3>
+                <p>Sugestão para o Rancho</p>
+                <input type="email" placeholder="Seu e-mail para não esquecer" required>
+                <br>
+                <button class="btn-reserve" onclick="confirmarReserva()">RESERVAR PRESENTE</button>
+            </div>
 
-        <div style="text-align: left; margin-top: 20px;">
-            <label><strong>Sugestão para presentes</strong></label>
-            <select id="lista">
-                <option>Selecione um presente...</option>
-                <option>Kit Churrasco</option>
-                <option>Jogo de Pratos</option>
-                <option>Rede de Descanso</option>
-            </select>
-        </div>
+            <div class="gift-card">
+                <h3>Cooler Térmico Retro</h3>
+                <p>Sugestão para o Rancho</p>
+                <input type="email" placeholder="Seu e-mail para não esquecer" required>
+                <br>
+                <button class="btn-reserve" onclick="confirmarReserva()">RESERVAR PRESENTE</button>
+            </div>
+            
+            </div>
+    </div>
 
-        <div class="reserva-box">
-            <p><strong>Reserve abaixo o seu presente</strong></p>
-            <input type="email" placeholder="Seu melhor e-mail" required>
-            <button class="principal">RESERVAR AGORA</button>
-        </div>
-
-        <footer>© 2026 Rancho do Robinho 2 - Todos os direitos reservados.</footer>
+    <div id="admin-modal">
+        <h3>Acesso Restrito</h3>
+        <input type="password" id="admin-pass" placeholder="Digite a senha">
+        <br><br>
+        <button class="btn-reserve" onclick="checkPass()">Entrar</button>
+        <button onclick="closeAdmin()" style="background:none; color:white; border:none; margin-left:10px; cursor:pointer;">Cancelar</button>
     </div>
 
     <script>
-        function painelAdm() {
-            const senhaAdm = "robinho2026";
-            let check = prompt("Senha do Administrador:");
-            if (check === senhaAdm) {
-                let novo = prompt("Digite o novo presente:");
-                if (novo) {
-                    let s = document.getElementById('lista');
-                    let opt = document.createElement('option');
-                    opt.text = novo;
-                    s.add(opt);
-                    alert("Adicionado!");
-                }
-            } else if (check !== null) {
+        function confirmarReserva() {
+            alert("Reserva realizada! Enviamos os detalhes para o e-mail informado (Simulação).");
+        }
+
+        function openAdmin() {
+            document.getElementById('admin-modal').style.display = 'block';
+        }
+
+        function closeAdmin() {
+            document.getElementById('admin-modal').style.display = 'none';
+        }
+
+        function checkPass() {
+            const pass = document.getElementById('admin-pass').value;
+            if(pass === "1234") { // Defina sua senha aqui
+                alert("Acesso liberado! Você pode editar os itens agora.");
+                closeAdmin();
+            } else {
                 alert("Senha incorreta!");
             }
         }
