@@ -5,31 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rancho do Robinho 2 - Lista de Presentes</title>
     <style>
-        /* CSS RESET E ESTILOS BÁSICOS */
         body, html {
             margin: 0;
             padding: 0;
             min-height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #222; /* Fundo escuro de fallback */
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #1a1a1a; /* Cor de fundo caso a imagem falhe */
         }
 
-        /* 1. IMAGEM DE FUNDO ESMAECIDA (ROLLING) */
+        /* AJUSTE DO FUNDO - NOME CORRIGIDO */
         .background-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('rancho-novo.png'); /* Mude para o nome exato da sua imagem de fundo */
+            background-image: url('rancho-novo.png'); /* Nome exato do seu arquivo no GitHub */
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* Isso faz a imagem ficar parada enquanto o conteúdo rola */
-            filter: brightness(1.0) opacity(0.8); /* Efeito esmaecido */
+            background-attachment: fixed;
+            filter: brightness(0.4); /* Deixa a imagem de fundo mais escura para destacar o convite */
             z-index: -1;
         }
 
-        /* 2. ÍCONE DE ENGRENAGEM (ADM) */
         .admin-login {
             position: fixed;
             top: 15px;
@@ -37,146 +35,69 @@
             background: rgba(255, 255, 255, 0.9);
             padding: 8px;
             border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            text-decoration: none;
             z-index: 1000;
             cursor: pointer;
             border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        /* 3. CONTAINER PRINCIPAL BRANCO (AJUSTADO PARA MOBILE) */
         .container {
-            width: 90%; /* Ocupa 90% da largura da tela */
-            max-width: 600px; /* Não passa de 600px em telas grandes */
-            margin: 30px auto; /* Centraliza e dá espaçamento superior/inferior */
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px 20px; /* Diminuído padding para mobile */
-            border-radius: 12px;
+            width: 90%;
+            max-width: 500px; /* Diminuí um pouco para aparecer mais o fundo no mobile */
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 25px;
+            border-radius: 15px;
             text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            position: relative;
-            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* 4. LOGO METÁLICO (NO LUGAR DO TEXTO H1) */
+        /* AJUSTE DO LOGO PARA DISFARÇAR O QUADRICULADO */
         .logo-imagem {
-            max-width: 100%; /* Adapta ao container */
+            max-width: 100%;
             height: auto;
-            margin-bottom: 5px;
-        }
-
-        /* Frase Original */
-        .subtitle {
-            font-size: 1.1rem;
-            font-style: italic;
-            color: #795548;
-            margin-top: 0;
-            margin-bottom: 25px;
-            padding: 0 10px;
-        }
-
-        hr {
-            border: 0;
-            border-top: 1px solid #ddd;
-            margin: 20px 0;
-        }
-
-        /* 5. LISTA DE PRESENTES */
-        .gift-section {
-            text-align: left;
-            margin: 20px 0;
-        }
-
-        .gift-section h3 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-
-        select {
-            width: 100%;
-            padding: 12px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
-            color: #555;
-            box-sizing: border-box;
-        }
-
-        /* Formulário de Reserva */
-        .reservation-box {
-            background: #fdfaf8;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 25px;
-        }
-
-        .reservation-box h4 {
-            color: #333;
+            border-radius: 10px;
             margin-bottom: 10px;
         }
 
-        .reservation-box p {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 0;
+        .subtitle {
+            font-size: 1rem;
+            font-style: italic;
+            color: #5d4037;
+            margin-bottom: 20px;
         }
 
-        input[type="email"] {
+        select, input[type="email"] {
             width: 100%;
             padding: 12px;
             margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
             box-sizing: border-box;
         }
 
-        /* Botão Original */
+        .reservation-box {
+            background: #f9f6f2;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
         button {
-            background-color: #5d4037; /* Cor marrom original */
+            background-color: #5d4037;
             color: white;
-            padding: 14px 28px;
+            padding: 15px 30px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1.1rem;
             font-weight: bold;
-            transition: background 0.3s;
-            text-transform: uppercase;
+            width: 100%;
         }
 
-        button:hover {
-            background-color: #3e2723;
-        }
-
-        /* 6. RODAPÉ COM ANO 2026 */
         footer {
-            margin-top: 25px;
-            font-size: 0.8rem;
-            color: #888;
-        }
-
-        /* AJUSTES ESPECÍFICOS PARA MOBILE */
-        @media (max-width: 480px) {
-            .container {
-                margin: 20px auto; /* Margem menor no mobile */
-                padding: 20px 15px; /* Padding interno menor */
-            }
-            
-            .subtitle {
-                font-size: 1rem; /* Diminui um pouco a fonte */
-            }
-
-            .logo-imagem {
-                margin-bottom: 10px;
-            }
-
-            button {
-                width: 100%; /* Botão ocupa toda a largura no mobile */
-                font-size: 1rem;
-            }
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #999;
         }
     </style>
 </head>
@@ -184,43 +105,33 @@
 
     <div class="background-container"></div>
 
-    <a class="admin-login" title="Área do Administrador">
-        ⚙️
-    </a>
+    <button class="admin-login" onclick="alert('Área do ADM em desenvolvimento')">⚙️</button>
 
     <div class="container">
-        
-        <img src="rancho-logo.png" alt="Rancho do Robinho 2" class="logo-imagem">
+        <img src="rancho-logo.png" alt="Logo" class="logo-imagem">
 
         <p class="subtitle">"Venha celebrar comigo essa data importante!"</p>
         
-        <hr>
+        <hr style="opacity: 0.1;">
 
-        <div class="gift-section">
-            <h3>Sugestão para presentes</h3>
-            <p>Escolha um item da lista que gostaria de presentear:</p>
-
-            <select id="presente">
-                <option value="" disabled selected>Selecione um presente...</option>
-                <option value="kit-churrasco">Kit Churrasco Completo</option>
-                <option value="rede-descanso">Rede de Descanso Rústica</option>
-                <option value="jogo-pratos">Jogo de Pratos Decorativos</option>
-                <option value="caixa-termica">Caixa Térmica 45L</option>
+        <div style="text-align: left;">
+            <label><strong>Sugestão para presentes</strong></label>
+            <select>
+                <option>Selecione um presente...</option>
+                <option>Kit Churrasco</option>
+                <option>Jogo de Pratos</option>
+                <option>Bota de Couro</option>
             </select>
         </div>
 
         <div class="reservation-box">
-            <h4>Reserve abaixo o seu presente</h4>
-            <p><small>Enviaremos um lembrete para o seu e-mail.</small></p>
-            
-            <input type="email" id="emailConvidado" placeholder="Seu melhor e-mail" required>
-            <br><br>
-            <button type="button">RESERVAR AGORA</button>
+            <p><strong>Reserve abaixo o seu presente</strong></p>
+            <p style="font-size: 0.8rem;">Enviaremos um lembrete para o seu e-mail.</p>
+            <input type="email" placeholder="Seu melhor e-mail" required>
+            <button>RESERVAR AGORA</button>
         </div>
 
-        <footer>
-            © 2026 Rancho do Robinho 2 - Todos os direitos reservados.
-        </footer>
+        <footer>© 2026 Rancho do Robinho 2 - Todos os direitos reservados.</footer>
     </div>
 
 </body>
