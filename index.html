@@ -1,77 +1,82 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rancho do Robinho 2 - Lista de Presentes</title>
+    <title>Rancho do Robinho 2</title>
     <style>
+        /* 1. RESET E FUNDO */
         body, html {
             margin: 0;
             padding: 0;
-            height: 100%;
+            width: 100%;
+            min-height: 100vh;
             font-family: 'Segoe UI', sans-serif;
+            background-color: #1a1a1a;
         }
 
-        /* FUNDO: Garante que a imagem apareça e não fique preto */
         .background-container {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
+            /* Verifique se o nome do arquivo no GitHub é exatamente este: */
             background-image: url('rancho-novo.png'); 
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
-            filter: brightness(0.5); 
+            background-attachment: fixed;
+            filter: brightness(0.4);
             z-index: -1;
         }
 
+        /* 2. ÍCONE ADM FIXO */
         .admin-login {
             position: fixed;
             top: 15px;
             right: 15px;
             background: rgba(255, 255, 255, 0.9);
-            padding: 8px;
+            padding: 10px;
             border-radius: 50%;
             z-index: 1000;
             cursor: pointer;
             border: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            font-size: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
+        /* 3. CONTAINER RESPONSIVO (RESOLVE O PROBLEMA DO ZOOM) */
         .container {
             width: 90%;
-            max-width: 450px;
+            max-width: 450px; /* Impede que fique gigante no PC */
             margin: 40px auto;
             background: rgba(255, 255, 255, 0.98);
             padding: 25px;
-            border-radius: 15px;
+            border-radius: 20px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            box-sizing: border-box;
         }
 
         .logo-imagem {
-            max-width: 100%;
+            width: 100%;
             height: auto;
+            border-radius: 10px;
             margin-bottom: 10px;
         }
 
         .subtitle {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-style: italic;
             color: #5d4037;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         select, input[type="email"] {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin: 10px 0;
             border: 1px solid #ddd;
-            border-radius: 8px;
+            border-radius: 10px;
             box-sizing: border-box;
             font-size: 16px;
         }
@@ -79,26 +84,27 @@
         .reservation-box {
             background: #f9f6f2;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-top: 20px;
         }
 
         button.btn-reserva {
             background-color: #5d4037;
             color: white;
-            padding: 15px 30px;
+            padding: 16px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
             width: 100%;
+            font-size: 1rem;
             text-transform: uppercase;
         }
 
         footer {
-            margin-top: 20px;
-            font-size: 0.75rem;
-            color: #999;
+            margin-top: 25px;
+            font-size: 0.8rem;
+            color: #777;
         }
     </style>
 </head>
@@ -106,18 +112,18 @@
 
     <div class="background-container"></div>
 
-    <button class="admin-login" onclick="editarLista()">⚙️</button>
+    <button class="admin-login" onclick="acessoPainel()">⚙️</button>
 
     <div class="container">
         <img src="rancho-logo-solo.png" alt="Logo" class="logo-imagem">
 
         <p class="subtitle">"Venha celebrar comigo essa data importante!"</p>
         
-        <hr style="opacity: 0.1;">
+        <hr style="opacity: 0.1; margin: 20px 0;">
 
         <div style="text-align: left;">
             <label><strong>Sugestão para presentes</strong></label>
-            <select id="selectPresentes">
+            <select id="listaPresentes">
                 <option>Selecione um presente...</option>
                 <option>Kit Churrasco</option>
                 <option>Jogo de Pratos</option>
@@ -127,51 +133,31 @@
 
         <div class="reservation-box">
             <p><strong>Reserve abaixo o seu presente</strong></p>
-            <p style="font-size: 0.8rem;">Enviaremos um lembrete para o seu e-mail.</p>
+            <p style="font-size: 0.85rem; color: #666;">Enviaremos um lembrete para o seu e-mail.</p>
             
-            <input type="email" id="emailConvidado" placeholder="Seu melhor e-mail" required>
-            <button class="btn-reserva" onclick="confirmarReserva()">RESERVAR AGORA</button>
+            <input type="email" id="emailUser" placeholder="Seu melhor e-mail" required>
+            <button class="btn-reserva" onclick="alert('Reserva enviada!')">RESERVAR AGORA</button>
         </div>
 
         <footer>© 2026 Rancho do Robinho 2 - Todos os direitos reservados.</footer>
     </div>
 
     <script>
-        // Função para o Administrador editar a lista
-        function editarLista() {
-            const senhaDefinida = "robinho2026"; // VOCÊ PODE MUDAR A SENHA AQUI
-            let senhaDigitada = prompt("Digite a senha do administrador:");
-
-            if (senhaDigitada === senhaDefinida) {
-                let acao = prompt("Senha correta! O que deseja fazer?\n1 - Adicionar presente\n2 - Limpar lista");
-                
-                if (acao === "1") {
-                    let novoPresente = prompt("Digite o nome do novo presente:");
-                    if (novoPresente) {
-                        let select = document.getElementById("selectPresentes");
-                        let option = document.createElement("option");
-                        option.text = novoPresente;
-                        select.add(option);
-                        alert("Presente adicionado com sucesso!");
-                    }
-                } else if (acao === "2") {
-                    document.getElementById("selectPresentes").innerHTML = "<option>Selecione um presente...</option>";
-                    alert("Lista limpa!");
+        function acessoPainel() {
+            const senhaCorreta = "robinho2026"; // SUA SENHA
+            let senha = prompt("Digite a senha para editar a lista:");
+            
+            if (senha === senhaCorreta) {
+                let novoItem = prompt("Senha correta! Digite o nome do novo presente:");
+                if (novoItem) {
+                    let select = document.getElementById('listaPresentes');
+                    let option = document.createElement('option');
+                    option.text = novoItem;
+                    select.add(option);
+                    alert("Item adicionado!");
                 }
-            } else if (senhaDigitada !== null) {
+            } else if (senha !== null) {
                 alert("Senha incorreta!");
-            }
-        }
-
-        // Função simples para o botão de reserva
-        function confirmarReserva() {
-            const email = document.getElementById("emailConvidado").value;
-            const presente = document.getElementById("selectPresentes").value;
-
-            if (email === "" || presente === "Selecione um presente...") {
-                alert("Por favor, escolha um presente e digite seu e-mail.");
-            } else {
-                alert("Obrigado! O item '" + presente + "' foi reservado. Enviamos os detalhes para " + email);
             }
         }
     </script>
