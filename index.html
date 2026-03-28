@@ -13,14 +13,27 @@
             background: url('capa 2.jpeg') no-repeat center center fixed;
             background-size: cover; color: var(--marrom);
         }
+        /* Mural que funciona em Mobile e PC */
         .mural {
-            max-width: 550px; margin: 40px auto;
-            background: rgba(255, 255, 255, 0.92);
-            padding: 25px; border-radius: 15px; text-align: center;
+            max-width: 550px; 
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.94);
+            padding: 25px; 
+            border-radius: 15px; 
+            text-align: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
-        .logo-mural { max-width: 180px; margin-bottom: 10px; }
-        h1 { color: var(--laranja); font-size: 1.8rem; margin-bottom: 20px; }
+        /* Logo centralizada dentro do mural */
+        .logo-mural { 
+            width: 100%;
+            max-width: 220px; 
+            height: auto;
+            margin-bottom: 10px; 
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h1 { color: var(--laranja); font-size: 1.8rem; margin-top: 10px; }
         
         .item {
             display: flex; justify-content: space-between; align-items: center;
@@ -29,52 +42,48 @@
         .item.reservado { color: #888; }
         .item.reservado span { text-decoration: line-through; }
 
-        .status-ponto {
-            display: inline-block; width: 10px; height: 10px;
-            border-radius: 50%; margin-left: 8px;
-        }
-        .disponivel { background: var(--verde); }
-        .indisponivel { background: #888; }
-
         button { padding: 10px 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
-        .btn-res { background: var(--verde); color: white; }
+        .btn-res { background: var(--verde); color: white; min-width: 100px; }
         .btn-res:disabled { background: #bbb; cursor: not-allowed; }
         
-        /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; }
-        .modal-content { background: white; width: 90%; max-width: 350px; margin: 100px auto; padding: 20px; border-radius: 10px; }
-        input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        /* Modal de reserva */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; }
+        .modal-content { background: white; width: 85%; max-width: 350px; margin: 100px auto; padding: 25px; border-radius: 10px; }
+        input { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; }
 
-        /* Estilo para o ADM ver os botões de apagar */
-        .btn-del { background: #ff4d4d; color: white; margin-left: 5px; display: none; }
+        @media (max-width: 480px) {
+            .mural { margin: 15px; padding: 15px; }
+            h1 { font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body>
 
     <div class="mural">
-        <img src="image_8d9fc4.png" class="logo-mural" alt="Rancho do Robinho 2">
+        <img src="logo-rancho.png" class="logo-mural" alt="Rancho do Robinho 2">
         <h1>Sugestões do Xerife</h1>
         
         <div id="lista-presentes"></div>
         
-        <p style="margin-top:20px; font-size: 0.9rem;">
-            <a href="#" onclick="recuperar()">Esqueceu o que reservou? Clique aqui</a>
+        <p style="margin-top:25px; font-size: 0.85rem;">
+            <a href="#" onclick="recuperar()" style="color: var(--laranja);">Esqueceu o que reservou?</a>
         </p>
     </div>
 
     <div id="modal" class="modal">
         <div class="modal-content">
             <h3>Reservar Item</h3>
+            <p style="font-size: 0.9rem;">Insira seus dados para reservar:</p>
             <input type="text" id="nome-con" placeholder="Seu Nome">
             <input type="email" id="email-con" placeholder="Seu E-mail">
-            <button class="btn-res" onclick="confirmar()">Confirmar</button>
-            <button onclick="fechar()" style="background:none; color:#888;">Cancelar</button>
+            <button class="btn-res" onclick="confirmar()" style="width: 100%;">Confirmar Reserva</button>
+            <button onclick="fechar()" style="background:none; color:#888; width: 100%; margin-top: 10px;">Cancelar</button>
         </div>
     </div>
 
     <script>
-        // Use o seu link do Firebase aqui
-        const firebaseConfig = { databaseURL: "COLE_AQUI_O_LINK_DO_SEU_DATABASE" };
+        // Lembre-se de colocar o seu link do Firebase Realtime Database aqui
+        const firebaseConfig = { databaseURL: "https://rancho-robinho2-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         let idSelecionado = null;
@@ -84,51 +93,4 @@
 
         function confirmar() {
             const nome = document.getElementById('nome-con').value;
-            const email = document.getElementById('email-con').value;
-            if(nome && email) {
-                db.ref('presentes/' + idSelecionado).update({
-                    reservado: true,
-                    nomeReservado: nome,
-                    emailReservado: email
-                });
-                fechar();
-                alert("Reserva concluída!");
-            } else { alert("Preencha os dados!"); }
-        }
-
-        // Desenha a lista (Ajustado para NÃO mostrar o nome de quem reservou para o público)
-        db.ref('presentes').on('value', (snap) => {
-            const lista = document.getElementById('lista-presentes');
-            lista.innerHTML = "";
-            snap.forEach((item) => {
-                const p = item.val();
-                const id = item.key;
-                const div = document.createElement('div');
-                div.className = `item ${p.reservado ? 'reservado' : ''}`;
-                
-                div.innerHTML = `
-                    <span>
-                        ${p.nome} 
-                        <span class="status-ponto ${p.reservado ? 'indisponivel' : 'disponivel'}"></span>
-                    </span>
-                    <button class="btn-res" ${p.reservado ? 'disabled' : ''} onclick="abrir('${id}')">
-                        ${p.reservado ? 'Reservado' : 'Reservar'}
-                    </button>
-                `;
-                lista.appendChild(div);
-            });
-        });
-
-        function recuperar() {
-            const email = prompt("Digite seu e-mail:");
-            if(email) {
-                db.ref('presentes').once('value', (snap) => {
-                    let meus = [];
-                    snap.forEach(i => { if(i.val().emailReservado === email) meus.push(i.val().nome); });
-                    alert(meus.length ? "Você reservou: " + meus.join(", ") : "Nenhuma reserva para este e-mail.");
-                });
-            }
-        }
-    </script>
-</body>
-</html>
+            const email
