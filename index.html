@@ -5,164 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rancho do Robinho 2 - Lista de Presentes</title>
     <style>
-        /* Estilização Geral */
+        /* 1. CORREÇÃO DA IMAGEM DE FUNDO */
         body, html {
             margin: 0;
             padding: 0;
-            height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #333;
+            min-height: 100%;
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        /* Imagem de Fundo Esmaecida */
-        .background-container {
+        .bg-fixo {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('rancho-novo.jpg'); /* Certifique-se que o arquivo está na mesma pasta */
+            /* Certifique-se que o nome do arquivo seja exatamente rancho-novo.jpg */
+            background-image: url('rancho-novo.jpg'); 
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
-            filter: brightness(0.5) contrast(0.8) opacity(0.6); /* Efeito esmaecido */
+            filter: brightness(0.6) opacity(0.5); /* Esmaecido como solicitado */
             z-index: -1;
         }
 
-        /* Ícone de Admin (Canto Superior Direito) */
-        .admin-login {
+        /* 2. ÍCONE DE ENGRENAGEM (ADM) */
+        .admin-btn {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px;
+            background: white;
             border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            text-decoration: none;
             z-index: 1000;
-            transition: transform 0.3s;
+            border: none;
+            font-size: 20px;
         }
 
-        .admin-login:hover {
-            transform: scale(1.1);
-        }
-
-        /* Conteúdo Principal */
+        /* Container Principal */
         .container {
-            max-width: 800px;
+            max-width: 700px;
             margin: 50px auto;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 40px;
             border-radius: 15px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            position: relative;
         }
 
-        h1 { color: #5d4037; margin-bottom: 10px; }
-        p.subtitle { font-size: 1.2rem; font-style: italic; color: #795548; }
+        h1 { color: #5d4037; }
+        .frase { font-style: italic; color: #8d6e63; margin-bottom: 30px; }
 
-        /* Lista de Presentes */
-        .gift-list {
-            margin: 30px 0;
-            text-align: left;
-        }
-
-        .gift-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        /* Formulário de Reserva */
-        .reservation-box {
-            background: #f9f9f9;
-            padding: 25px;
-            border-radius: 10px;
-            margin-top: 30px;
-        }
-
-        input[type="email"], select {
-            width: 80%;
+        select, input[type="email"] {
+            width: 100%;
             padding: 12px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 1rem;
+            box-sizing: border-box; /* Evita que o input saia da tela */
         }
 
-        button {
-            background-color: #5d4037;
+        .reserva-section {
+            background: #fdfaf8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        button.btn-reservar {
+            background: #5d4037;
             color: white;
-            padding: 15px 30px;
             border: none;
+            padding: 15px 40px;
             border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.1rem;
             font-weight: bold;
-            transition: background 0.3s;
+            cursor: pointer;
+            text-transform: uppercase;
         }
 
-        button:hover {
-            background-color: #3e2723;
-        }
-
-        footer { margin-top: 20px; font-size: 0.8rem; color: #666; }
+        footer { margin-top: 30px; font-size: 0.8rem; color: #888; }
     </style>
 </head>
 <body>
 
-    <div class="background-container"></div>
+    <div class="bg-fixo"></div>
 
-    <a href="#" class="admin-login" title="Área do Administrador">
-        ⚙️
-    </a>
+    <button class="admin-btn" onclick="abrirPainelAdm()" title="Editar Presentes">⚙️</button>
 
     <div class="container">
         <h1>Rancho do Robinho 2</h1>
-        <p class="subtitle">"Venha celebrar comigo essa data importante!"</p>
+        <p class="frase">"Venha celebrar comigo essa data importante!"</p>
         
-        <hr>
+        <hr style="opacity: 0.2;">
 
         <h3>Sugestão para presentes</h3>
         <p>Escolha um item da lista que gostaria de presentear:</p>
 
-        <form id="reservaForm">
-            <div class="gift-list">
-                <select id="presente" required>
-                    <option value="" disabled selected>Selecione um presente...</option>
-                    <option value="jogo-pratos">Jogo de Pratos Rústicos</option>
-                    <option value="kit-churrasco">Kit Churrasco Profissional</option>
-                    <option value="rede-descanso">Rede de Descanso</option>
-                    <option value="caixa-termica">Caixa Térmica 45L</option>
-                    <option value="decoracao-parede">Quadro Decorativo Country</option>
-                </select>
-            </div>
+        <select id="listaPresentes">
+            <option value="Kit Churrasco">Kit Churrasco</option>
+            <option value="Jogo de Pratos">Jogo de Pratos Rústicos</option>
+            <option value="Rede">Rede de Descanso</option>
+        </select>
 
-            <div class="reservation-box">
-                <h4>Reserve abaixo o seu presente</h4>
-                <p><small>Enviaremos um lembrete para o seu e-mail.</small></p>
-                
-                <input type="email" id="emailConvidado" placeholder="Seu melhor e-mail" required>
-                <br><br>
-                <button type="submit">RESERVAR AGORA</button>
-            </div>
-        </form>
+        <div class="reserva-section">
+            <h4>Reserve abaixo o seu presente</h4>
+            <p><small>Enviaremos um lembrete para o seu e-mail.</small></p>
+            <input type="email" id="emailConvidado" placeholder="Seu melhor e-mail" required>
+            <br><br>
+            <button class="btn-reservar" onclick="reservar()">RESERVAR AGORA</button>
+        </div>
 
-        <footer>
-            © 2024 Rancho do Robinho 2 - Todos os direitos reservados.
-        </footer>
+        <footer>© 2026 Rancho do Robinho 2 - Todos os direitos reservados.</footer>
     </div>
 
     <script>
-        document.getElementById('reservaForm').onsubmit = function(e) {
-            e.preventDefault();
-            const email = document.getElementById('emailConvidado').value;
-            const item = document.getElementById('presente').value;
-            alert('Sucesso! O item "' + item + '" foi reservado. Um comprovante foi enviado para: ' + email);
-        };
-    </script>
+        // Função para o botão de engrenagem (Simulação de ADM)
+        function abrirPainelAdm() {
+            let senha = prompt("Digite a senha de administrador para editar os presentes:");
+            if (senha === "1234") { // Você pode mudar a senha aqui
+                let novoItem = prompt("Digite o nome do novo presente para adicionar à lista:");
+                if (novoItem) {
+                    let select = document.getElementById('listaPresentes');
+                    let option = document.createElement('option');
+                    option.text = novoItem;
+                    select.add(option);
+                    alert("Item adicionado com sucesso!");
+                }
+            } else {
+                alert("Senha incorreta!");
+            }
+        }
 
+        function reservar() {
+            const email = document.getElementById('emailConvidado').value;
+            const presente = document.getElementById('listaPresentes').value;
+            if (email.includes("@")) {
+                alert("Sucesso! O presente (" + presente + ") foi reservado. Um e-mail foi enviado para " + email);
+            } else {
+                alert("Por favor, insira um e-mail válido.");
+            }
+        }
+    </script>
 </body>
 </html>
