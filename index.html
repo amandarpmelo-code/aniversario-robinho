@@ -2,27 +2,30 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rancho do Robinho 2</title>
     <style>
-        /* 1. RESET E FUNDO */
+        /* 1. CORREÇÃO DO FUNDO PRETO */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             min-height: 100vh;
             font-family: 'Segoe UI', sans-serif;
-            background-color: #1a1a1a;
+            background-color: #1a1a1a; /* Cor de segurança */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
         }
 
-        .background-container {
+        .background-fixo {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* Verifique se o nome do arquivo no GitHub é exatamente este: */
-            background-image: url('rancho-novo.png'); 
+            /* IMPORTANTE: Nome deve ser idêntico ao arquivo no GitHub */
+            background-image: url('rancho-novo.jpg'); 
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -30,48 +33,48 @@
             z-index: -1;
         }
 
-        /* 2. ÍCONE ADM FIXO */
-        .admin-login {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px;
-            border-radius: 50%;
-            z-index: 1000;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        /* 3. CONTAINER RESPONSIVO (RESOLVE O PROBLEMA DO ZOOM) */
+        /* 2. AJUSTE DO ZOOM E CONTAINER */
         .container {
             width: 90%;
-            max-width: 450px; /* Impede que fique gigante no PC */
+            max-width: 450px; /* Impede que fique gigante ou muito pequeno */
             margin: 40px auto;
             background: rgba(255, 255, 255, 0.98);
-            padding: 25px;
+            padding: 30px 20px;
             border-radius: 20px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
             box-sizing: border-box;
+            position: relative;
         }
 
         .logo-imagem {
             width: 100%;
+            max-width: 280px;
             height: auto;
-            border-radius: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .subtitle {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-style: italic;
             color: #5d4037;
             margin-bottom: 25px;
+            line-height: 1.4;
         }
 
-        select, input[type="email"] {
+        /* 3. ENGRENAGEM ADM */
+        .admin-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: #ccc;
+        }
+
+        select, input {
             width: 100%;
             padding: 14px;
             margin: 10px 0;
@@ -81,86 +84,81 @@
             font-size: 16px;
         }
 
-        .reservation-box {
-            background: #f9f6f2;
+        .reserva-box {
+            background: #fdfaf8;
             padding: 20px;
             border-radius: 12px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
-        button.btn-reserva {
+        button.principal {
             background-color: #5d4037;
             color: white;
             padding: 16px;
             border: none;
             border-radius: 10px;
-            cursor: pointer;
             font-weight: bold;
             width: 100%;
-            font-size: 1rem;
+            cursor: pointer;
             text-transform: uppercase;
         }
 
         footer {
             margin-top: 25px;
             font-size: 0.8rem;
-            color: #777;
+            color: #888;
         }
     </style>
 </head>
 <body>
 
-    <div class="background-container"></div>
-
-    <button class="admin-login" onclick="acessoPainel()">⚙️</button>
+    <div class="background-fixo"></div>
 
     <div class="container">
-        <img src="rancho-logo-solo.png" alt="Logo" class="logo-imagem">
+        <button class="admin-btn" onclick="painelAdm()">⚙️</button>
+
+        <img src="rancho-logo-solo.jpg" alt="Logo" class="logo-imagem">
 
         <p class="subtitle">"Venha celebrar comigo essa data importante!"</p>
         
-        <hr style="opacity: 0.1; margin: 20px 0;">
+        <hr style="opacity: 0.1;">
 
-        <div style="text-align: left;">
+        <div style="text-align: left; margin-top: 20px;">
             <label><strong>Sugestão para presentes</strong></label>
-            <select id="listaPresentes">
+            <select id="lista">
                 <option>Selecione um presente...</option>
                 <option>Kit Churrasco</option>
                 <option>Jogo de Pratos</option>
-                <option>Bota de Couro</option>
+                <option>Rede de Descanso</option>
             </select>
         </div>
 
-        <div class="reservation-box">
+        <div class="reserva-box">
             <p><strong>Reserve abaixo o seu presente</strong></p>
-            <p style="font-size: 0.85rem; color: #666;">Enviaremos um lembrete para o seu e-mail.</p>
-            
-            <input type="email" id="emailUser" placeholder="Seu melhor e-mail" required>
-            <button class="btn-reserva" onclick="alert('Reserva enviada!')">RESERVAR AGORA</button>
+            <input type="email" placeholder="Seu melhor e-mail" required>
+            <button class="principal">RESERVAR AGORA</button>
         </div>
 
         <footer>© 2026 Rancho do Robinho 2 - Todos os direitos reservados.</footer>
     </div>
 
     <script>
-        function acessoPainel() {
-            const senhaCorreta = "robinho2026"; // SUA SENHA
-            let senha = prompt("Digite a senha para editar a lista:");
-            
-            if (senha === senhaCorreta) {
-                let novoItem = prompt("Senha correta! Digite o nome do novo presente:");
-                if (novoItem) {
-                    let select = document.getElementById('listaPresentes');
-                    let option = document.createElement('option');
-                    option.text = novoItem;
-                    select.add(option);
-                    alert("Item adicionado!");
+        function painelAdm() {
+            const senhaAdm = "robinho2026";
+            let check = prompt("Senha do Administrador:");
+            if (check === senhaAdm) {
+                let novo = prompt("Digite o novo presente:");
+                if (novo) {
+                    let s = document.getElementById('lista');
+                    let opt = document.createElement('option');
+                    opt.text = novo;
+                    s.add(opt);
+                    alert("Adicionado!");
                 }
-            } else if (senha !== null) {
+            } else if (check !== null) {
                 alert("Senha incorreta!");
             }
         }
     </script>
-
 </body>
 </html>
