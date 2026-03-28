@@ -12,75 +12,187 @@
             --creme: #fff5e1;
             --marrom: #3e2723;
             --verde: #2e8b57;
-            --preto: #000;
         }
 
         body {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
-            color: var(--marrom);
-            /* Segunda imagem como fundo fixo e que cobre tudo */
+            /* SEGUNDA IMAGEM COMO FUNDO DA PÁGINA TODA */
             background-image: url('capa 2.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
+            background-color: var(--creme);
         }
 
-        /* Banner Superior (Primeira Imagem - ATUALIZADO) */
+        /* BANNER SUPERIOR DISCRETO */
         .header-banner {
-            background-color: var(--preto);
+            background-color: #000;
             text-align: center;
             position: relative;
-            /* Dimensões muito menores: 1200x150 pixels */
-            max-width: 1200px;
-            height: 150px; /* Redução radical da altura */
-            margin: 0 auto;
+            width: 100%;
+            height: 120px; /* Altura reduzida para ser apenas um cabeçalho */
             overflow: hidden;
-            border-bottom: 2px solid var(--laranja); /* Linha divisória charmosa */
+            border-bottom: 3px solid var(--laranja);
         }
 
         .img-banner {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Mostra a imagem inteira sem cortar */
-            object-position: center; /* Centraliza a imagem */
-            opacity: 0.6; /* Efeito esmaecido (60% de opacidade) */
+            object-fit: contain;
+            opacity: 0.5; /* EFEITO ESMAECIDO */
         }
 
         .admin-login {
             position: absolute;
             top: 10px;
             right: 15px;
-            display: flex;
-            gap: 5px;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 5px;
-            border-radius: 5px;
+            z-index: 10;
         }
 
         .admin-login input {
             padding: 5px;
             border-radius: 5px;
-            border: 1px solid #ccc;
-            width: 80px;
+            border: none;
+            width: 70px;
             font-size: 0.8rem;
+            opacity: 0.8;
         }
 
-        /* Painel de Controle (Inalterado) */
+        /* CONTAINER DA LISTA */
+        .container-lista {
+            max-width: 550px;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.92); /* Branco levemente transparente */
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
         #painel-adm {
             display: none;
-            background: white;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 2px dashed var(--laranja);
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 20px;
             border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 2px dashed var(--laranja);
         }
 
-        .input-novo-item {
-            padding: 10px;
-            width: 70%;
+        h1 { text-align: center; color: var(--laranja); margin-top: 0; }
+        p { text-align: center; font-style: italic; }
+
+        .item-presente {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .item-presente.reservado span {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        /* BOTÕES */
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-reservar { background: var(--verde); color: white; }
+        .btn-reservar:disabled { background: #bbb; cursor: not-allowed; }
+        .btn-add { background: var(--laranja); color: white; margin-top: 10px; width: 100%; }
+        .btn-del { background: #ff4d4d; color: white; padding: 5px 10px; margin-left: 10px; display: none; }
+
+    </style>
+</head>
+<body>
+
+    <header class="header-banner">
+        <div class="admin-login">
+            <input type="password" id="senha-adm" placeholder="Senha">
+            <button onclick="fazerLogin()" style="padding: 5px; font-size: 0.7rem;">OK</button>
+        </div>
+        <img src="capa.jpeg" alt="Banner" class="img-banner">
+    </header>
+
+    <main class="container-lista">
+        <h1>Rancho do Robinho 2</h1>
+        <p>Escolha um presente para celebrar com o Xerife!</p>
+
+        <div id="painel-adm">
+            <input type="text" id="nome-presente" placeholder="Nome do presente..." style="width: 93%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+            <button class="btn-add" onclick="adicionarPresente()">Adicionar à Lista</button>
+        </div>
+
+        <div id="lista-presentes">
+            </div>
+    </main>
+
+    <script>
+        // ATENÇÃO: COLOQUE SEU LINK DO FIREBASE ABAIXO
+        const firebaseConfig = {
+            databaseURL: "SEU_LINK_AQUI", 
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function fazerLogin() {
+            if(document.getElementById('senha-adm').value === "robinho2") {
+                document.getElementById('painel-adm').style.display = 'block';
+                document.querySelectorAll('.btn-del').forEach(b => b.style.display = 'inline-block');
+                alert("Modo ADM Ativado!");
+            }
+        }
+
+        function adicionarPresente() {
+            const input = document.getElementById('nome-presente');
+            if(input.value) {
+                db.ref('presentes').push({ nome: input.value, reservado: false });
+                input.value = "";
+            }
+        }
+
+        db.ref('presentes').on('value', (snapshot) => {
+            const lista = document.getElementById('lista-presentes');
+            lista.innerHTML = "";
+            const painelAberto = document.getElementById('painel-adm').style.display === 'block';
+
+            snapshot.forEach((item) => {
+                const data = item.val();
+                const id = item.key;
+                const div = document.createElement('div');
+                div.className = `item-presente ${data.reservado ? 'reservado' : ''}`;
+                div.innerHTML = `
+                    <span>${data.nome}</span>
+                    <div>
+                        <button class="btn-reservar" ${data.reservado ? 'disabled' : ''} onclick="reservar('${id}')">
+                            ${data.reservado ? 'Reservado' : 'Reservar'}
+                        </button>
+                        <button class="btn-del" style="display: ${painelAberto ? 'inline-block' : 'none'}" onclick="remover('${id}')">X</button>
+                    </div>
+                `;
+                lista.appendChild(div);
+            });
+        });
+
+        function reservar(id) {
+            if(confirm("Confirmar reserva deste presente?")) {
+                db.ref('presentes/' + id).update({ reservado: true });
+            }
+        }
+
+        function remover(id) {
+            if(confirm("Apagar este item?")) db.ref('presentes/' + id).remove();
+        }
+    </script>
+</body>
+</html>
