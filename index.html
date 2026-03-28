@@ -3,153 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RANCHO DO ROBINHO2 - Lista de Presentes</title>
+    <title>Rancho do Robinho 2 - Lista de Presentes</title>
     <style>
-        /* 1. CORREÇÃO DA IMAGEM DE FUNDO */
+        /* CSS RESET E ESTILOS BÁSICOS */
         body, html {
             margin: 0;
             padding: 0;
             min-height: 100%;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #222; /* Fundo escuro de fallback */
         }
 
-        .bg-fixo {
+        /* 1. IMAGEM DE FUNDO ESMAECIDA (ROLLING) */
+        .background-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* Certifique-se que o nome do arquivo seja exatamente rancho-novo.png */
-            background-image: url('rancho-novo.png'); 
+            background-image: url('fundo.jpg'); /* Mude para o nome exato da sua imagem de fundo */
             background-size: cover;
             background-position: center;
-            filter: brightness(1.0) opacity(0.8); /* Esmaecido como solicitado */
+            background-attachment: fixed; /* Isso faz a imagem ficar parada enquanto o conteúdo rola */
+            filter: brightness(0.5) opacity(0.6); /* Efeito esmaecido */
             z-index: -1;
         }
 
         /* 2. ÍCONE DE ENGRENAGEM (ADM) */
-        .admin-btn {
+        .admin-login {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            text-decoration: none;
             z-index: 1000;
+            cursor: pointer;
             border: none;
-            font-size: 20px;
         }
 
-        /* Container Principal */
+        /* 3. CONTAINER PRINCIPAL BRANCO (AJUSTADO PARA MOBILE) */
         .container {
-            max-width: 700px;
-            margin: 50px auto;
+            width: 90%; /* Ocupa 90% da largura da tela */
+            max-width: 600px; /* Não passa de 600px em telas grandes */
+            margin: 30px auto; /* Centraliza e dá espaçamento superior/inferior */
             background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 15px;
+            padding: 30px 20px; /* Diminuído padding para mobile */
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
             position: relative;
+            box-sizing: border-box;
         }
 
-        h1 { color: #5d4037; }
-        .frase { font-style: italic; color: #8d6e63; margin-bottom: 30px; }
+        /* 4. LOGO METÁLICO (NO LUGAR DO TEXTO H1) */
+        .logo-imagem {
+            max-width: 100%; /* Adapta ao container */
+            height: auto;
+            margin-bottom: 5px;
+        }
 
-        select, input[type="email"] {
+        /* Frase Original */
+        .subtitle {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #795548;
+            margin-top: 0;
+            margin-bottom: 25px;
+            padding: 0 10px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #ddd;
+            margin: 20px 0;
+        }
+
+        /* 5. LISTA DE PRESENTES */
+        .gift-section {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .gift-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            color: #555;
+            box-sizing: border-box;
+        }
+
+        /* Formulário de Reserva */
+        .reservation-box {
+            background: #fdfaf8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+
+        .reservation-box h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .reservation-box p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0;
+        }
+
+        input[type="email"] {
             width: 100%;
             padding: 12px;
             margin: 10px 0;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box; /* Evita que o input saia da tela */
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
         }
 
-        .reserva-section {
-            background: #fdfaf8;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        button.btn-reservar {
-            background: #5d4037;
+        /* Botão Original */
+        button {
+            background-color: #5d4037; /* Cor marrom original */
             color: white;
+            padding: 14px 28px;
             border: none;
-            padding: 15px 40px;
-            border-radius: 5px;
-            font-weight: bold;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: background 0.3s;
             text-transform: uppercase;
         }
 
-        footer { margin-top: 30px; font-size: 0.8rem; color: #888; }
+        button:hover {
+            background-color: #3e2723;
+        }
+
+        /* 6. RODAPÉ COM ANO 2026 */
+        footer {
+            margin-top: 25px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* AJUSTES ESPECÍFICOS PARA MOBILE */
+        @media (max-width: 480px) {
+            .container {
+                margin: 20px auto; /* Margem menor no mobile */
+                padding: 20px 15px; /* Padding interno menor */
+            }
+            
+            .subtitle {
+                font-size: 1rem; /* Diminui um pouco a fonte */
+            }
+
+            .logo-imagem {
+                margin-bottom: 10px;
+            }
+
+            button {
+                width: 100%; /* Botão ocupa toda a largura no mobile */
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="bg-fixo"></div>
+    <div class="background-container"></div>
 
-    <button class="admin-btn" onclick="abrirPainelAdm()" title="Editar Presentes">⚙️</button>
+    <a class="admin-login" title="Área do Administrador">
+        ⚙️
+    </a>
 
     <div class="container">
-        <h1>RANCHO DO ROBINHO 2</h1>
-        <p class="frase">Venha celebrar comigo essa data importante!</p>
         
-        <hr style="opacity: 0.2;">
+        <img src="rancho-logo.png" alt="Rancho do Robinho 2" class="logo-imagem">
 
-        <h3>Sugestão para presentes</h3>
-        <p>Escolha um item da lista que gostaria de presentear:</p>
+        <p class="subtitle">"Venha celebrar comigo essa data importante!"</p>
+        
+        <hr>
 
-        <select id="listaPresentes">
-            <option value="Kit Churrasco">Kit Churrasco</option>
-            <option value="Jogo de Pratos">Jogo de Pratos Rústicos</option>
-            <option value="Rede">Rede de Descanso</option>
-        </select>
+        <div class="gift-section">
+            <h3>Sugestão para presentes</h3>
+            <p>Escolha um item da lista que gostaria de presentear:</p>
 
-        <div class="reserva-section">
-            <h4>Reserve abaixo o seu presente</h4>
-            <p><small>Enviaremos um lembrete para o seu e-mail.</small></p>
-            <input type="email" id="emailConvidado" placeholder="Seu melhor e-mail" required>
-            <br><br>
-            <button class="btn-reservar" onclick="reservar()">RESERVAR AGORA</button>
+            <select id="presente">
+                <option value="" disabled selected>Selecione um presente...</option>
+                <option value="kit-churrasco">Kit Churrasco Completo</option>
+                <option value="rede-descanso">Rede de Descanso Rústica</option>
+                <option value="jogo-pratos">Jogo de Pratos Decorativos</option>
+                <option value="caixa-termica">Caixa Térmica 45L</option>
+            </select>
         </div>
 
-        <footer>© 2026 RANCHO DO ROBINHO 2 - Todos os direitos reservados.</footer>
+        <div class="reservation-box">
+            <h4>Reserve abaixo o seu presente</h4>
+            <p><small>Enviaremos um lembrete para o seu e-mail.</small></p>
+            
+            <input type="email" id="emailConvidado" placeholder="Seu melhor e-mail" required>
+            <br><br>
+            <button type="button">RESERVAR AGORA</button>
+        </div>
+
+        <footer>
+            © 2026 Rancho do Robinho 2 - Todos os direitos reservados.
+        </footer>
     </div>
 
-    <script>
-        // Função para o botão de engrenagem (Simulação de ADM)
-        function abrirPainelAdm() {
-            let senha = prompt("Digite a senha de administrador para editar os presentes:");
-            if (senha === "1234") { // Você pode mudar a senha aqui
-                let novoItem = prompt("Digite o nome do novo presente para adicionar à lista:");
-                if (novoItem) {
-                    let select = document.getElementById('listaPresentes');
-                    let option = document.createElement('option');
-                    option.text = novoItem;
-                    select.add(option);
-                    alert("Item adicionado com sucesso!");
-                }
-            } else {
-                alert("Senha incorreta!");
-            }
-        }
-
-        function reservar() {
-            const email = document.getElementById('emailConvidado').value;
-            const presente = document.getElementById('listaPresentes').value;
-            if (email.includes("@")) {
-                alert("Sucesso! O presente (" + presente + ") foi reservado. Um e-mail foi enviado para " + email);
-            } else {
-                alert("Por favor, insira um e-mail válido.");
-            }
-        }
-    </script>
 </body>
 </html>
